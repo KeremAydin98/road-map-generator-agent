@@ -36,6 +36,55 @@ actor_prompt_template = ChatPromptTemplate.from_messages(
             1. {first_instruction}
             2. Reflect and critique your answer. Be severe to maximize improvement.
             3. Recommend search queries to research information and improve your answer.
+
+            
+            Your job is to provide a roadmap of 4 weeks for the user based on the given topic and user characteristics.
+            The roadmap should include a description of the learning type, activity, and resources for each week in the format of below example:
+
+            [Example_input] 
+            Topic: Angular
+            Level: Beginner
+            Learning Style: Hands-on
+            [/Example_input]
+            [Example_output]
+            Week 1: Advanced Components and Data Binding
+            Description: Deep dive into Angular's component architecture. Explore advanced data binding techniques.
+            Learning Type: Conceptual, Hands-on, Writing
+            Resources:
+            Official Angular Documentation: https://angular.io/guide/components and https://angular.io/guide/template-syntax (Reading, Writing)
+            Angular Components Deep Dive Tutorial: https://www.simplilearn.com/tutorials/angular-tutorial/angular-components (Hands-on)
+            Activity: Create a blog post comparing and contrasting different data binding types in Angular. Provide code examples demonstrating each type and discuss their use cases and benefits. Consider scenarios like displaying data from an API, handling user input in forms, and updating data dynamically. (Writing)
+            
+            Week 2: State Management with RxJS and Services
+            Description: Learn to manage application state using RxJS observables and Angular services. Handle asynchronous operations and side effects.
+            Learning Type: Conceptual, Hands-on, Writing
+            Resources:
+            State Management Best Practices: https://www.infragistics.com/community/blogs/b/infragistics/posts/angular-state-management (Reading)
+            Interactive Angular Tutorial: https://angular.dev/tutorials/learn-angular/ (Hands-on, Interactive)
+            Activity: Write a tutorial on building an Angular service that interacts with an external API (e.g., fetching data from a JSON placeholder API). Include examples of error handling using RxJS operators like catchError and data transformation using operators like map. Demonstrate how to use this service in a component to display and update data. (Writing)
+            
+            Week 3: Advanced Routing, Performance Optimization, and Testing
+            Description: Master advanced routing, performance optimization, unit testing, and end-to-end (E2E) testing.
+            Learning Type: Conceptual, Hands-on, Writing
+            Resources:
+            Lazy Loading Routes Tutorial: https://www.digitalocean.com/community/tutorials/angular-lazy-loading (Reading, Hands-on)
+            Activity:
+            Part 1: Lazy Loading: Document the steps to implement lazy loading in an Angular application and demonstrate the performance improvements you observed.
+
+            Week 4: Advanced Angular Projects and Further Exploration
+            Description: Work on advanced Angular projects and explore additional learning resources.
+            Learning Type: Hands-on, Project-based learning, Readin
+            Resources:
+            Angular Testing Best Practices: https://dev.to/chintanonweb/mastering-angular-unit-testing-a-comprehensive-guide-with-examples-3eg9 (Reading)
+            End-to-End Testing with Protractor: https://www.browserstack.com/guide/how-to-perform-end-to-end-testing-in-angular (Reading, Hands-on)
+            Activitiy: 
+            Part 1: Unit Testing: Write a guide on setting up unit tests for a simple Angular component, covering different scenarios like testing component inputs, outputs, and template elements. Provide code examples for each scenario.
+            Part 2: E2E Testing: Develop E2E tests for a sample Angular application using Protractor. Cover scenarios like navigating between routes, interacting with form elements, and verifying data displayed on the page. Document the process and share your code examples. (Writing)
+
+            Further Exploration:
+            Advanced Angular Projects with Source Code: https://trainings.internshala.com/blog/angular-projects-with-source-code/ (Project-based learning)
+            [/Example_output]
+
             
             Answer the user's question above using the required format. Your response MUST be less than 500 words."""
         ),

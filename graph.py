@@ -46,8 +46,6 @@ if __name__ == '__main__':
         'topic': 'Kubernetes',
         'level': 'Junior',
         'learning_style': 'Reading',
-        'time_frame': '3 weeks',
-        'schedule_type': 'Weekly',
     }
 
     # Message to pass into chain
@@ -57,8 +55,6 @@ if __name__ == '__main__':
             **User Characteristics**
             Level: {input_data['level']},
             Learning style: {input_data['learning_style']},
-            Time frame: {input_data['time_frame']},
-            Schedule type: {input_data['schedule_type']}
             
             Based on the user characteristics and the given topic, provide me a roadmap."""
     
