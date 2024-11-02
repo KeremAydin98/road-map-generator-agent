@@ -9,7 +9,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_google_genai import ChatGoogleGenerativeAI
 import os
 
-from schemas import AnswerQuestion, ReviseAnswer
+from schemas import AnswerQuestion, ReviseAnswer, Quiz
 
 load_dotenv()
 
@@ -36,7 +36,6 @@ actor_prompt_template = ChatPromptTemplate.from_messages(
             1. {first_instruction}
             2. Reflect and critique your answer. Be severe to maximize improvement.
             3. Recommend search queries to research information and improve your answer.
-
             
             Your job is to provide a roadmap of 4 weeks for the user based on the given topic and user characteristics.
             The roadmap should include a description of the learning type, activity, and resources for each week in the format of below example:
@@ -114,6 +113,50 @@ revisor = actor_prompt_template.partial(
     first_instruction=revise_instructions
 ) | llm.bind_tools(tools=[ReviseAnswer], tool_choice="ReviseAnswer")
 
+
+quiz_prompt_template = ChatPromptTemplate.from_messages(
+    [
+        ("system", 
+        """You are an expert professor in the given topic.
+        Your task is to generate a quiz of 3 questions based on the description, level of the week.
+        The quiz should include multiple-choice questions with 4 options each.
+        The questions should test the user's understanding of the topic and the concepts covered in the roadmap.
+
+        The example of this process can be seen below:
+        [Example_input]
+        Week 1: Advanced Components and Data Binding
+        Description: Deep dive into Angular's component architecture. Explore advanced data binding techniques.
+        Learning Type: Conceptual, Hands-on, Writing
+        Level: Beginner
+        [/Example_input]
+        [Example_output]
+        Question 1: What is the purpose of Angular components?
+        A. To manage application state
+        B. To structure the user interface
+        C. To handle asynchronous operations
+        D. To interact with external APIs
+        Correct Answer: B
+
+        Question 2: Which of the following is NOT a data binding technique in Angular?
+        A. One-way data binding
+        B. Two-way data binding
+        C. Event binding
+        D. Property binding
+        Correct Answer: C
+
+        Question 3: What is the benefit of using Angular's component architecture?
+        A. Improved performance
+        B. Enhanced security
+        C. Easier debugging
+        D. Better user experience
+        Correct Answer: D
+        [/Example_output]
+        """),
+        MessagesPlaceholder(variable_name='messages'), # Future messages
+    ]
+)
+
+quiz_generator = quiz_prompt_template | llm.bind_tools(tools=[Quiz], tool_choice="Quiz")
 
 if __name__ == '__main__':
 

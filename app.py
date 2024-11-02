@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
-from langchain_core.messages import BaseMessage, ToolMessage
+from langchain_core.messages import BaseMessage, ToolMessage, HumanMessage
 from langgraph.graph import END, MessageGraph
 from typing import List
-# Import the graph and required components
-from chains import revisor, roadmap_generator
+from chains import revisor, roadmap_generator, quiz_generator
 from tool_executor import execute_tools
 import re
 
@@ -36,6 +35,51 @@ builder.set_entry_point("draft")
 
 # Compile the graph
 graph = builder.compile()
+
+@app.route('/create_quiz', methods=['POST'])
+def create_quiz():
+    # Get the request data (JSON input with user characteristics and topic)
+    data = request.get_json()
+    description = data.get('description', '')
+    learningType = data.get('learningType', '')
+    level = data.get('level', '')
+
+
+    if not description:
+        return jsonify({"error": "description is required"}), 400
+    elif not learningType:
+        return jsonify({"error": "learningType is required"}), 400
+    elif not level:
+        return jsonify({"error": "level is required"}), 400
+
+    content = f"**Description** \
+            {description} \
+            **Learning Type** \
+            {learningType} \
+            **Level** \
+            {level} \
+            Based on the user characteristics and the given topic, provide me a quiz."
+    
+    human_message = HumanMessage(
+        content=content
+    )
+
+    try:
+        # Quiz generator chain
+        response = quiz_generator.invoke({'messages': [human_message], 'input_language': 'English', 'output_language': 'English'})
+        questions = []
+
+        for message in response.tools_calls:
+            if message.tool_name == "Quiz":
+                questions.append({
+                    "question": message['args']['question'],
+                    "answers": message['args']['options'],
+                    "correctAnswer": message['args']['correct_answer']
+                })
+
+        return jsonify({"questions": questions})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/invoke_graph', methods=['POST'])
 def invoke_graph():

@@ -5,7 +5,7 @@ from langgraph.graph.message import add_messages
 from langchain_core.messages import BaseMessage, ToolMessage, HumanMessage, AIMessage
 from langgraph.graph import END, StateGraph, MessageGraph
 
-from chains import revisor, roadmap_generator
+from chains import revisor, roadmap_generator, quiz_generator
 from tool_executor import execute_tools
 
 from termcolor import colored

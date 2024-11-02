@@ -20,3 +20,8 @@ class ReviseAnswer(AnswerQuestion):
     references: List[str] = Field(
         description="Citations motivating your updated answer."
     )
+
+class Quiz(BaseModel):
+    question: str = Field(description='Question to be asked')
+    options: List[str] = Field(description='Options for the question')
+    correct_answer: str = Field(description='Correct answer to the question')
